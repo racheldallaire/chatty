@@ -18,9 +18,18 @@ class App extends Component {
 
   // Called after the component was rendered and it was attached to the
   // DOM. This is a good place to make AJAX requests or setTimeout.
-  componentDidMount() {
-
-  }
+componentDidMount() {
+  console.log("componentDidMount <App />");
+  setTimeout(() => {
+    console.log("Simulating incoming message");
+    // Add a new message to the list of messages in the data store
+    const newMessage = {currentUser: 'Michelle', content: 'Hello there!', key: 3};
+    const messages = this.state.messages.concat(newMessage)
+    // Update the state of the app component.
+    // Calling setState will trigger a call to render() in App and all child components.
+    this.setState({messages: messages});
+  }, 3000);
+}
 
   // Called any time the props or state changes. The JSX elements
   // returned in this method will be rendered to the DOM.

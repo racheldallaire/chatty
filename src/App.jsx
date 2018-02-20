@@ -16,6 +16,7 @@ class App extends Component {
 // Set initial state so the user is initially anonymous
   constructor(props) {
     super(props);
+    this.socket = new WebSocket('ws:localhost:3001');
     this.brandNewMessage = this.brandNewMessage.bind(this);
     this.state = {
       currentUser: {name: 'Anonymous'},
@@ -34,8 +35,9 @@ class App extends Component {
 
   // Called after the component was rendered and it was attached to the DOM.
 componentDidMount() {
-  console.log("componentDidMount <App />");
-
+  this.socket.onopen = (event) => {
+    console.log('Connected to server');
+   };
 }
 
   // Called any time the props or state changes. The JSX elements returned in this method will be rendered to the DOM.

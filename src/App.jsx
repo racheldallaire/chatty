@@ -17,6 +17,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.socket = new WebSocket('ws:localhost:3001');
+
     this.brandNewMessage = this.brandNewMessage.bind(this);
     this.state = {
       currentUser: {name: 'Anonymous'},
@@ -29,6 +30,8 @@ class App extends Component {
 
   brandNewMessage(message) {
     const newMessage = {currentUser: message.currentUser, content: message.input, key: generateRandomString()};
+    this.socket.send(JSON.stringify(newMessage));
+    console.log(newMessage);
     const messages = this.state.messages.concat(newMessage);
     this.setState({messages: messages});
   }

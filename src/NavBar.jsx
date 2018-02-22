@@ -5,6 +5,7 @@ export default function NavBar () {
    <nav className="navbar">
     <a href="/" className="navbar-brand">Chatty </a>
     <img className="navbar-logo" src='../icon.png' />
+    <span className="navbar-users" />
    </nav>
   )
 }

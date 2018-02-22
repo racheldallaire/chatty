@@ -47,6 +47,7 @@ body {
 
 .message.system {
   font-style: italic;
+  color: darkgrey;
   padding: 5px 20px;
 }
 
@@ -94,4 +95,12 @@ body {
   width: 50px;
   height: 50px;
   margin-top: 10px
+}
+
+.navbar-users {
+  float: right;
+  color: white;
+  font-family: 'Roboto Condensed', sans-serif;
+  line-height: 60px;
+  padding-right: 10px;
 }

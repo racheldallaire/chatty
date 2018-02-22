@@ -2,7 +2,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
 
 body {
-  background-color: white;
+  background: white;
   color: black;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
@@ -68,7 +68,7 @@ body {
 }
 
 .navbar {
-  background: darkslategray;
+  background: linear-gradient(0.25turn, #134E5E, #71B280);
   height: 65px;
   left: 0;
   padding: 0 10px;

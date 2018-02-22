@@ -24,6 +24,7 @@ wss.on('connection', (ws) => {
 ws.on('message', function incoming(message) {
     let msg = JSON.parse(message);
     msg.key = uuidv4();
+    msg.type = 'incomingMessage'
     console.log('User', msg.currentUser, 'said', msg.content);
 
   // Broadcast to all.

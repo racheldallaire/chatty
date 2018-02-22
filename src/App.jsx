@@ -16,7 +16,14 @@ class App extends Component {
   }
 
   brandNewMessage(message) {
-    const newMessage = {currentUser: message.currentUser, content: message.input};
+    const newMessage = {type: 'postMessage', currentUser: message.currentUser, content: message.input};
+    if (message.currentUser !== this.state.currentUser.name) {
+
+      this.setState({currentUser : { name: message.currentUser} })
+
+      const newNotification = {type: 'postNotification', content: `${this.state.currentUser.name} has changed their name to ${message.currentUser}.`}
+      this.socket.send(JSON.stringify(newNotification))
+    }
     this.socket.send(JSON.stringify(newMessage));
   }
 
@@ -27,6 +34,7 @@ componentDidMount() {
    }
    this.socket.onmessage = (event) => {
     console.log(event.data);
+    console.log(this.state.currentUser);
     const newMess = JSON.parse(event.data)
     const messages = this.state.messages.concat(newMess);
     this.setState({messages: messages});

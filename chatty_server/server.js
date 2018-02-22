@@ -20,12 +20,16 @@ const wss = new SocketServer({ server });
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
-
+  console.log(wss.clients);
 ws.on('message', function incoming(message) {
     let msg = JSON.parse(message);
     msg.key = uuidv4();
-    msg.type = 'incomingMessage'
-    console.log('User', msg.currentUser, 'said', msg.content);
+
+    if(msg.type === 'postMessage') {
+      msg.type === 'incomingMessage'
+    } else if (msg.type === 'postNotification') {
+      msg.type === 'incomingNotification'
+    }
 
   // Broadcast to all.
   wss.broadcast = function broadcast(msg) {

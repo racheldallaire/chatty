@@ -11,7 +11,8 @@ class App extends Component {
     this.brandNewMessage = this.brandNewMessage.bind(this);
     this.state = {
       currentUser: {name: 'Anonymous'},
-      messages: []
+      messages: [],
+      userCount: 0
     };
   }
 
@@ -26,23 +27,26 @@ class App extends Component {
   }
 
   // Called after the component was rendered and it was attached to the DOM.
-componentDidMount() {
-  this.socket.onopen = (event) => {
-    console.log('Connected to server')
-   }
-   this.socket.onmessage = (event) => {
+  componentDidMount() {
+    this.socket.onopen = (event) => {
+      console.log('Connected to server')
+     }
+    this.socket.onmessage = (event) => {
     const newMess = JSON.parse(event.data)
     const messages = this.state.messages.concat(newMess);
+          if (messages[0].type === 'incomingUsers') {
+        this.setState({userCount : messages[0].online})
+      } else {
     this.setState({messages: messages});
-
-   }
-}
+      }
+    }
+  }
 
   // Called any time the props or state changes. The JSX elements returned in this method will be rendered to the DOM.
   render() {
     return (
       <div>
-      <NavBar />
+      <NavBar usersOnline={this.state.userCount}/>
       <MessageList messages = {this.state.messages} />
       <ChatBar defaultValue={this.state.currentUser.name} brandNewMessage={this.brandNewMessage}/>
       </div>

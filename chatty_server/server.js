@@ -8,19 +8,30 @@ const PORT = 3001;
 
 // Create a new express server
 const server = express()
-   // Make the express server serve static assets (html, javascript, css) from the /public folder
+   // Make the express server serve static assets from the /public folder
   .use(express.static('public'))
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
+// Create broadcast function that will send data to client
+wss.broadcast = function broadcast(data) {
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
+};
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  console.log(wss.clients);
+  const onlineUsers = wss.clients.size;
+  wss.broadcast({type: 'incomingUsers', online: onlineUsers, key: uuidv4(), content: `${onlineUsers} user[s] online`});
+
 ws.on('message', function incoming(message) {
     let msg = JSON.parse(message);
     msg.key = uuidv4();
@@ -30,19 +41,12 @@ ws.on('message', function incoming(message) {
     } else if (msg.type === 'postNotification') {
       msg.type === 'incomingNotification'
     }
-
-  // Broadcast to all.
-  wss.broadcast = function broadcast(msg) {
-    wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(msg));
-      }
-    });
-  };
   wss.broadcast(msg);
 });
 
-
-  // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
-});
+// Set up a callback for when a client closes the socket.
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    wss.broadcast({type: 'incomingUsers', online: onlineUsers, key: uuidv4()});
+    })
+  });

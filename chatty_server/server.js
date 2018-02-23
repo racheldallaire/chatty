@@ -2,6 +2,7 @@ const express = require('express');
 const SocketServer = require('ws').Server;
 const uuidv4 = require('uuid/v4');
 const WebSocket = require('ws');
+const randomColor = require('random-color');
 
 // Set the port to 3001
 const PORT = 3001;
@@ -28,13 +29,18 @@ wss.broadcast = function broadcast(data) {
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
-  console.log('Client connected');
+  console.log('A client connected');
   const onlineUsers = wss.clients.size;
-  wss.broadcast({type: 'incomingUsers', online: onlineUsers, key: uuidv4(), content: `${onlineUsers} user[s] online`});
+  wss.broadcast({type: 'incomingUsers', online: onlineUsers, key: uuidv4()});
+  let random = randomColor();
+  let hex = random.hexString();
+  let userColor = {color : hex}
+  console.log(userColor);
 
 ws.on('message', function incoming(message) {
     let msg = JSON.parse(message);
     msg.key = uuidv4();
+    msg.color = userColor;
 
     if(msg.type === 'postMessage') {
       msg.type === 'incomingMessage'
@@ -46,7 +52,7 @@ ws.on('message', function incoming(message) {
 
 // Set up a callback for when a client closes the socket.
   ws.on('close', () => {
-    console.log('Client disconnected');
+    console.log('A client disconnected');
     wss.broadcast({type: 'incomingUsers', online: onlineUsers, key: uuidv4()});
     })
   });

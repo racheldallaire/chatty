@@ -35,7 +35,6 @@ wss.on('connection', (ws) => {
   let random = randomColor();
   let hex = random.hexString();
   let userColor = {color : hex}
-  console.log(userColor);
 
 ws.on('message', function incoming(message) {
     let msg = JSON.parse(message);

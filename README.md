@@ -6,7 +6,13 @@ Chatty is a client-side single-page app built with ReactJS, Webpack which includ
 
 ## Final Product
 
-![Screenshot of ](url)
+![Screenshot of functionality](https://github.com/racheldallaire/chatty/blob/master/docs/main%20screenshot.gif)
+
+App displays how many users are currently online, assigns each user a random colour, and displays a notification when a user changes their name.
+
+![Screenshot of colours](https://github.com/racheldallaire/chatty/blob/master/docs/colour-screenshot.png)
+
+A user's colour persists even if they change their name. Each new user will be assigned a new, completely random colour.
 
 ### Getting Started
 
